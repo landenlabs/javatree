@@ -1,48 +1,56 @@
 ### a LanDen Labs - JavaTree
-Android Developer Tool
+Java Developer Tool
 
 
 WebSite
 [http://landenlabs.com](http://landenlabs.com)
 
 ***
-Description
+Parse Java source files and produce class relationship as HTML, GraphViz or Text file
 ***
 
-javatree
+Javatree help banner
+<blockquote>
 
-Des: Generate Java class dependence tree
+
+Des: Generate Java class dependence tree<br>
 Use: Javatree [-+ntgxshjz] header_files...
 
+<pre>
 Switches (*=default)(-=off, +=on):
   n  ; Show alphabetic class name list
 * t  ; Show class dependency tree
-Output format (single choice):
 
+<p>
+Output format (single choice):
 * g  ; Use graphics for tree connections
   x  ; Use (+|-) for tree connections
   s  ; Use spaces for tree connections
   h  ; Html tree connections
   j  ; Java tree connections
   z  ; GraphViz 
-Modifiers:
 
+<p>
+Modifiers:
   Z              ; Split GraphViz by tree, use with -O
   N=nodesPerFile ; Split by nodes per file, use with -O
   O=outpath      ; Save output in file 
-
   V=filePattern  ; Ignore files 
-
   A=allClasses   ; Defaults to public 
 
-
+<p>
 Examples
-
   javatree -t +n  src\*.java  ; *.java prevent recursion
   javatree -x  src\* > javaTree.txt
   javatree -h  src\* > javaTree.html
   javatree -j  src\* > javaTreeWithJs.html
 
+<p>
   -V is case sensitive 
   javatree -z -Z -O=.\viz\ -V=*Test* -V=*Exception* src\* >foo.gv
-  javatree -z -N=10 -O=.\viz\ -V=*Test* -V=*Exception* src\* >foo.gv
+  javatree -z -N=10 -O=.\viz\ -V=*Test* -V=*Exception* src\* >foo.g
+ </pre>
+ </blockquote>
+  
+  <hr>
+  <p>
