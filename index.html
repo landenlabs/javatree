@@ -1,13 +1,19 @@
-### a LanDen Labs - JavaTree
+<html>
+    
+<body>
+    
+<h2> a LanDen Labs - JavaTree </h2>
+    
 Java Developer Tool
 
-
+<p>
 WebSite
-[http://landenlabs.com](http://landenlabs.com)
+    <a href="http://landenlabs.com">http://landenlabs.com</a>
+    
 
-***
+<h3>
 Parse Java source files and produce class relationship as HTML, GraphViz or Text file
-***
+</h3>
 
 Javatree help banner
 <blockquote>
@@ -58,17 +64,17 @@ Examples (assumes java source code in directory src):
  </blockquote>
   
   
-***
+<h3>
 Example test script to generate reports using sample Java code
-***
+    </h3>
   
 <blockquote>
 <pre>
 #!/bin/csh -f
 
-\#
-\#  Generate test reports
-\#
+#
+#  Generate test reports
+#
 
 javatree test       > reports/windows.txt
 javatree -h test    >  reports/html.html
@@ -80,27 +86,30 @@ javatree -z test    > reports/directgraph.dot
 </pre>
 </blockquote>
 
-***
+<h3>
 Sample reports
-***
+    </h3>
 
-### javatree -h test    >  reports/html.html
-![ScreenShot](http://landenlabs.com/code/javatree/images/report-html.png)
+<p><b>javatree -h test    >  reports/html.html</b>
+<img src="images/report-html.png">
+    
 
-### javatree -h -T test >  reports/tabular.html
-![ScreenShot](http://landenlabs.com/code/javatree/images/report-tabular.png)
+<p><b> javatree -h -T test >  reports/tabular.html</b>
+<img src="images/report-tabular.png">
 
-### javatree -x test    >  reports/text.txt
-![ScreenShot](http://landenlabs.com/code/javatree/images/report-text.png)
+<p><b> javatree -x test    >  reports/text.txt</b>
+<img src="images/report-text.png">
 
-### javatree -t +n test >  reports/list.txt
-![ScreenShot](http://landenlabs.com/code/javatree/images/report-text.png)
+<p><b> javatree -t +n test >  reports/list.txt</b>
+<img src="images/report-text.png">
 
-### javatree -j test    > reports/tree.html
-![ScreenShot](http://landenlabs.com/code/javatree/images/report-tree.png)
+<p><b> javatree -j test    > reports/tree.html</b>
+<img src="images/report-tree.png">
 
-### javatree -z test    > reports/directgraph.dot
-### neato -Tpng reports/directgraph.dot > images/directgraph.png
-![ScreenShot](http://landenlabs.com/code/javatree/images/directgraph.png)
+<p><b> javatree -z test    > reports/directgraph.dot</b>
+<br><b> neato -Tpng reports/directgraph.dot > images/directgraph.png</b>
+<img src="images/directgraph.png">
 
 
+    </body>
+</html>

@@ -1,0 +1,7 @@
+ClassName	Modifiers	FirstParent	FirstChild	Interfaces	File
+Base		_NoParent_	BaseBeta		Base.java
+BaseAlpha	public 	Base	_NoChildren_		BaseAlpha.java
+BaseBeta	public 	Base	BaseBetaAlpha		BaseBeta.java
+BaseBetaAlpha	public 	BaseBeta	_NoChildren_		BaseBetaAlpha.java
+BaseBetaAlpha.Ibba	interface	_NoParent_	_NoChildren_		BaseBetaAlpha.java
+BaseBetaAlphaAlpha	public 	_NoParent_	_NoChildren_	BaseBetaAlpha.Ibba	BaseBetaAlphaAlpha.java

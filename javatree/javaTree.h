@@ -26,7 +26,10 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-const char version[] = "v1.3";
+const char version[] = "v1.4";
+
+const char nofile[] = "_no_file_";
+const char interface[] = "interface";
 
 const char dtree_css[] = 
 	".dtree {\n"

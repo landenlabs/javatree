@@ -1,0 +1,8 @@
+
+Class Tree
+              Base.java:  Base
+          BaseBeta.java:    + BaseBeta
+     BaseBetaAlpha.java:    |   - BaseBetaAlpha
+         BaseAlpha.java:    - BaseAlpha
+     BaseBetaAlpha.java:  BaseBetaAlpha.Ibba
+BaseBetaAlphaAlpha.java:  BaseBetaAlphaAlpha

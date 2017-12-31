@@ -1,0 +1,19 @@
+digraph test {
+bgcolor=transparent
+overlap=false;
+label="test Class Hierarchy - Dennis Lang & GraphViz";
+fontsize=12;
+node [shape=box,style=filled,fillcolor=white];
+"Base"  [fillcolor=cyan1]
+"Base" -> "BaseBeta"
+"BaseBeta"  [fillcolor=cyan4]
+"BaseBeta" -> "BaseBetaAlpha"
+"BaseBetaAlpha"
+"Base" -> "BaseAlpha"
+"BaseAlpha"
+"BaseBetaAlpha\nIbba"  [color=red] 
+"BaseBetaAlpha\nIbba"
+"BaseBetaAlpha.Ibba"  [style=filled, fillcolor=yellow] 
+"BaseBetaAlpha.Ibba" -> "BaseBetaAlphaAlpha" [color=red,penwidth=3.0] 
+"BaseBetaAlphaAlpha"
+}

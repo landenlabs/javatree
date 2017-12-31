@@ -74,6 +74,7 @@ bool needHeader = true;
 bool allClasses = false;
 bool importPackage = false;
 bool tabularList = false;
+bool fullPath = false;
 int cset        = GRAPHICS_CHAR;
 int nodesPerFile = 0;
 
@@ -150,7 +151,8 @@ ClassRelations* AddClass(
     else
     {
         pCrel = iter->second;
-        pCrel->file(filename);
+        if (filename != nofile)
+            pCrel->file(filename);
     }
     
     return pCrel;
@@ -685,6 +687,7 @@ lstring&  MakeFullClassName(lstring& outFullName, const StringList& inNames, con
 struct TableItem
 {
     lstring package;
+    lstring type;   // class or interface
     lstring className;
     lstring fullClassName;
     lstring modifier;
@@ -704,16 +707,17 @@ void outputHtmlTableList()
         "<table id='gradient-style' summary='display' ellspacing='0' width='100%'  >\n"
         "<thead>\n"
         "<tr>\n"
-        "<th scope='col'>Pakcage</th> \n"
-        "<th scope='col'>FullClassName</th> \n"
-        "<th scope='col'>ClassName</th> \n"
+        "<th scope='col'>Package</th> \n"
+        "<th scope='col'>Type</th> \n"
+        "<th scope='col'>FullName</th> \n"
+        "<th scope='col'>Name</th> \n"
         "<th scope='col'>Modifiers</th> \n"
         "<th scope='col'>Filename</th> \n"
         "</tr>\n"
         "</thead>\n"
         "<tfoot>\n"
         "<tr>\n"
-        "<td colspan='5'>Class List by Dennis Lang " << ctime(&nowTime) << "</td> \n"
+        "<td colspan='5'><a href=\"http://landenlabs.com\"> JavaTree  by Dennis Lang </a></td><td>" << ctime(&nowTime) << "</td> \n"
         "</tr> \n"
         "</tfoot> \n"
         "<tbody>\n";
@@ -723,6 +727,7 @@ void outputHtmlTableList()
         TableItem& item = tableList[idx];
         std::cout << "<tr>"
             << " <td>" << item.package
+            << " <td>" << item.type
             << " <td>" << item.fullClassName
             << " <td>" << item.className
             << " <td>" << item.modifier
@@ -753,13 +758,13 @@ bool TabularListOfInFile(const char* filepath)
     // int totalFuel(List<? extends Vehicle> list) { 
 
     
-    static std::regex  pubClass_p("[ \t]*(((public|abstract|final|static)[ \t]+)*)class[ \t]+([A-Za-z].*)");
-    static std::regex  allClass_p("[ \t]*(((public|protected|private|abstract|final|static)[ \t]+)*)class[ \t]+([A-Za-z].*)");
+    static std::regex  pubClass_p("[ \t]*(((public|abstract|final|static)[ \t]+)*)(class|interface)[ \t]+([A-Za-z].*)");
+    static std::regex  allClass_p("[ \t]*(((public|protected|private|abstract|final|static|)[ \t]+)*)(class|interface)[ \t]+([A-Za-z].*)");
     static std::regex  extentds_p("extends[ \t]+([A-Za-z][A-Za-z0-9_]+)");
     static std::regex  implements_p("implements[ \t]+([A-Za-z0-9_., <>]+)");
     static std::regex package_p("package[ \t]+([A-Za-z0-9_.]+);");
 
-    std::smatch     matchs;
+    std::smatch  matchs;
     lstring     full_class_name;
     lstring     class_name;
     lstring     class_modifier;
@@ -785,8 +790,8 @@ bool TabularListOfInFile(const char* filepath)
             }
             else
             {
-                const char* slashPos = strrchr(filename, SLASH_CHR);
-                if (slashPos != NULL)
+                const char* slashPos = strrchr(filepath, SLASH_CHR);
+                if (slashPos != NULL && ! fullPath)
                     filename = slashPos + 1;
                 else
                     filename = filepath;
@@ -825,8 +830,9 @@ bool TabularListOfInFile(const char* filepath)
                         continue;   // Ignore empty classes
 
                     class_modifier = std::string(matchs[1]);
-                    lstring rightClass = std::string(matchs[4]);
-                    rightClass.resize(endIdx - matchs.position(4));
+                    lstring classOrInterface = std::string(matchs[4]);
+                    lstring rightClass = std::string(matchs[5]);
+                    rightClass.resize(endIdx - matchs.position(5));
 
                     //   className < G1 , G2 >   =>  className<G1,G2>
                     ReplaceAll(rightClass, "\t", " ");
@@ -844,6 +850,7 @@ bool TabularListOfInFile(const char* filepath)
                         MakeFullClassName(full_class_name, classNames, class_name);
                         // crel_ptr = AddClass(full_class_name, class_modifier, filename);
                         TableItem item;
+                        item.type = classOrInterface;
                         item.className = class_name;
                         item.fullClassName = full_class_name;
                         item.package = packageName;
@@ -901,7 +908,7 @@ bool TabularListOfInFile(const char* filepath)
                                         // add_parent(crel_ptr, token, "_no_file_");
                                         break;
                                     case 2: // implements
-                                        // crel_ptr->add_interface(new ClassRelations(token, "interface", "_no_file_"));
+                                        // crel_ptr->add_interface(new ClassRelations(token, interface, "_no_file_"));
                                         break;
                                     }
                                 }
@@ -952,7 +959,7 @@ bool TabularListOfInFile(const char* filepath)
 // ---------------------------------------------------------------------------
 bool hasExtension(const lstring& filepath, const char* extn)
 {
-    char* found = strstr(filepath, extn);
+    const char* found = strstr(filepath, extn);
     if (found != NULL)
     {
         return (found[strlen(extn)] == '\0');
@@ -976,8 +983,8 @@ bool FindClassDefsInFile(const char* filepath)
     // class BST<X extends Comparable<X>> {
     // int totalFuel(List<? extends Vehicle> list) { 
 
-    static std::regex  pubClass_p("[ \t]*(((public|abstract|final|static)[ \t]+)*)class[ \t]+([A-Za-z].*)");
-    static std::regex  allClass_p("[ \t]*(((public|protected|private|abstract|final|static)[ \t]+)*)class[ \t]+([A-Za-z].*)");
+    static std::regex  pubClass_p("[ \t]*(((public|abstract|final|static)[ \t]+)*)(class|interface)[ \t]+([A-Za-z].*)");
+    static std::regex  allClass_p("[ \t]*(((public|protected|private|abstract|final|static|)[ \t]+)*)(class|interface)[ \t]+([A-Za-z].*)");
     static std::regex  extentds_p("extends[ \t]+([A-Za-z][A-Za-z0-9_]+)");
     static std::regex  implements_p("implements[ \t]+([A-Za-z0-9_., <>]+)");
     static std::regex package_p("package[ \t]+([A-Za-z0-9_.]+);");
@@ -1009,8 +1016,8 @@ bool FindClassDefsInFile(const char* filepath)
             }
             else
             {
-                const char* slashPos = strrchr(filename, SLASH_CHR);
-                if (slashPos != NULL)
+                const char* slashPos = strrchr(filepath, SLASH_CHR);
+                if (slashPos != NULL && !fullPath)
                     filename = slashPos + 1;
                 else
                     filename = filepath;
@@ -1038,7 +1045,7 @@ bool FindClassDefsInFile(const char* filepath)
                 else 
 #endif
                    
-                    if (std::regex_match(line, matchs, class_p, std::regex_constants::match_default))
+                if (std::regex_match(line, matchs, class_p, std::regex_constants::match_default))
                 {
                     size_t endIdx = line.find_first_of(";{");
                     char endChar = ' ';
@@ -1051,8 +1058,9 @@ bool FindClassDefsInFile(const char* filepath)
                         continue;   // Ignore empty classes
 
                     class_modifier = std::string(matchs[1]);
-                    lstring rightClass = std::string(matchs[4]);
-                    rightClass.resize(endIdx - matchs.position(4));
+                    lstring classOrInterface = std::string(matchs[4]);
+                    lstring rightClass = std::string(matchs[5]);
+                    rightClass.resize(endIdx - matchs.position(5));
 
                     //   className < G1 , G2 >   =>  className<G1,G2>
                     ReplaceAll(rightClass, "\t", " ");
@@ -1106,10 +1114,11 @@ bool FindClassDefsInFile(const char* filepath)
                                     switch (modType)
                                     {
                                     case 1: // extends
-                                        add_parent(crel_ptr, token, "_no_file_");
+                                        add_parent(crel_ptr, token, nofile);
                                         break;
                                     case 2: // implements
-                                        crel_ptr->add_interface(new ClassRelations(token, "interface", "_no_file_"));
+                                        crel_ptr->add_interface(AddClass(token, interface, nofile));
+                                        // crel_ptr->add_interface(new ClassRelations(token, interface, nofile));
                                         break;
                                     }
                                 }
@@ -1242,7 +1251,7 @@ bool FindImportPackageInFile(const char* filepath)
                         add_parent(child_ptr, packageName, filename);
                         file_ptr->add_child(child_ptr);
 #endif
-                        // crel_ptr->add_interface(new ClassRelations(token, "interface", "_no_file_"));
+                        // crel_ptr->add_interface(new ClassRelations(token, interface, "_no_file_"));
                     }
                 }
             }
@@ -1352,22 +1361,21 @@ void outputHtmlPrefix1()
 void outputHtmlMetaHeader2()
 {
     cout <<
-        "<meta name=\"keywords\" content=\"Android,class,hierarchy,tree,diagram\"> \n"
-        "<meta name=\"description\" content=\"Android class hierachy\">\n"
+        "<meta name=\"keywords\" content=\"Java,class,hierarchy,tree,diagram\"> \n"
+        "<meta name=\"description\" content=\"Java class hierachy\">\n"
         "<meta name=\"author\" content=\"Dennis Lang\">\n"
         "\n"
         "<!-- Mobile -->\n"
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">\n"
         "\n"
-        "<link rel=\"icon\" type=\"/~lang.dennis/image/ico\" href=\"favicon.ico\" > \n"
-        "<link rel=\"shortcut icon\" href=\"/~lang.dennis/favicon.ico\" >\n"
+        "<link rel=\"icon\" type=\"image/ico\" href=\"favicon.ico\" > \n"
+        "<link rel=\"shortcut icon\" href=\"/favicon.ico\" >\n"
         "\n"
         "<meta http-equiv=\"Content-type\" content=\"text/html;charset=UTF-8\" >\n"
         "<META http-equiv=\"Content-Style-Type\" content=\"text/css\">\n"
-        "<meta name=\"google-site-verification\" content=\"sTC1_x30FvQ9Xk-23yK-7jWMaoWFc7Dtw0waX6FFrAk\" >\n"
         "\n"
         "<!-- Google analytics tracking -->\n"
-        "<script type=\"text/javascript\" src=\"/~lang.dennis/scripts.js\"></script>\n"
+        "<script type=\"text/javascript\" src=\"~/scripts.js\"></script>\n"
         "\n"
         "<style> \n"
         "    body { \n"
@@ -1422,9 +1430,9 @@ void outputHtmlTableStyle()
         "</style>\n";
 
     cout <<
-        "<link rel='stylesheet' type='text/css' href='jquery.dataTables.min.css'> \n"
-        "<script type='text/javascript' language='javascript' src='jquery-1.11.3.min.js'></script> \n"
-        "<script type='text/javascript' language='javascript' src='jquery.dataTables.min.js'></script> \n"
+        "<link rel='stylesheet' type='text/css' href='http://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css'> \n"
+        "<script type='text/javascript' language='javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script> \n"
+        "<script type='text/javascript' charset='utf8' src='http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script> \n"
         "\n"
         "<script type='text/javascript' class='init'> \n"
         "\n"
@@ -1449,36 +1457,41 @@ int main(int argc, char* argv[])
 {  
     if (argc == 1)
     {
-        cerr << "\n" << argv[0] << "\n"
-            << "\nDes: Generate Java class dependence tree"
+        cerr << "\n" << argv[0] << " (" << version << ")\n"
+            << "\nDes: Generate Java class dependence tree (" __DATE__ ")"
             "\nUse: Javatree [-+ntgxshjz] header_files...\n"
             "\nSwitches (*=default)(-=off, +=on):"
             "\n  n  ; Show alphabetic class name list"
             "\n* t  ; Show class dependency tree"
-            "\nOutput format (single choice):\n"
+            "\n"
+            "\nOutput format (single choice):"
             "\n* g  ; Use graphics for tree connections"
             "\n  x  ; Use (+|-) for tree connections"
             "\n  s  ; Use spaces for tree connections"
             "\n  h  ; Html tree connections"
             "\n  j  ; Java tree connections"
             "\n  z  ; GraphViz "
-            "\nModifiers:\n"
+            "\n"
+            "\nModifiers:"
             "\n  Z              ; Split GraphViz by tree, use with -O"
             "\n  N=nodesPerFile ; Split by nodes per file, use with -O"
-            "\n  O=outpath      ; Save output in file \n"
-            "\n  V=filePattern  ; Ignore files \n"
-            "\n  A=allClasses   ; Defaults to public \n"
+            "\n  O=outpath      ; Save output in file"
+            "\n  T=tabular      ; Tabular html "
+            "\n  V=filePattern  ; Ignore files"
+            "\n  A=allClasses   ; Defaults to public"
+            "\n  F=full path    ; Defaults to relative"
             "\n"
-            "\nExamples\n"
+            "\nExamples (assumes java source code in directory src):"
             "\n  javatree -t +n  src\\*.java  ; *.java prevent recursion"
-                "\n  javatree -x  src\\* > javaTree.txt"
-                "\n  javatree -h  src\\* > javaTree.html"
-                "\n  javatree -j  src\\* > javaTreeWithJs.html"
-                "\n"
-                "\n  -V is case sensitive "
-                "\n  javatree -z -Z -O=.\\viz\\ -V=*Test* -V=*Exception* src\\* >foo.gv"
-                "\n  javatree -z -N=10 -O=.\\viz\\ -V=*Test* -V=*Exception* src\\* >foo.gv"
-                "\n";
+            "\n  javatree -x  src > javaTree.txt"
+            "\n  javatree -h  src > javaTree.html"
+            "\n  javatree -h -T src > javaTable.html"
+            "\n  javatree -j  src > javaTreeWithJs.html"
+            "\n"
+            "\n  -V is case sensitive "
+            "\n  javatree -z -Z -O=.\\viz\\ -V=*Test* -V=*Exception* src >directgraph.dot"
+            "\n  javatree -z -N=10 -O=.\\viz\\ -V=*Test* -V=*Exception* src >directgraph.dot"
+            "\n";
     }
     else
     {
@@ -1505,8 +1518,9 @@ int main(int argc, char* argv[])
 
                     // Modifiers
                     case 'A': allClasses = true;          break;
-                    case 'I': importPackage = true;       break;
-                    case 'T': tabularList = true;         break;
+                    case 'I': importPackage = true;        break;
+                    case 'F': fullPath = true;          break;
+                    case 'T': tabularList = true;          break;
                     case 'Z': vizSplit = true;            break;
                     case 'N':
                         nodesPerFile = (int)strtol(argv[argn] + 3, 0, 10);
@@ -1559,8 +1573,8 @@ int main(int argc, char* argv[])
             outputHtmlTitle3(graphName);
 #if 1
             cout <<
-                "	<link rel=StyleSheet href=dtree.css type=text/css /> \n"
-                "	<script type=text/javascript src=dtree.js></script>  \n";
+                "	<link rel=StyleSheet href=dtree/dtree.css type=text/css /> \n"
+                "	<script type=text/javascript src=dtree/dtree.js></script>  \n";
 #else
             cout << "<style>\n" << dtree_css << "\n</style>\n";
             cout << "<script type=\"text/javascript\">\n" << dtree_js << "\n</script>\n";

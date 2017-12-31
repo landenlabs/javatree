@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+<meta name="keywords" content="Java,class,hierarchy,tree,diagram"> 
+<meta name="description" content="Java class hierachy">
+<meta name="author" content="Dennis Lang">
+
+<!-- Mobile -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="icon" type="image/ico" href="favicon.ico" > 
+<link rel="shortcut icon" href="/favicon.ico" >
+
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" >
+<META http-equiv="Content-Style-Type" content="text/css">
+
+<!-- Google analytics tracking -->
+<script type="text/javascript" src="~/scripts.js"></script>
+
+<style> 
+    body { 
+    background: url("bg.jpg");
+    }
+</style>
+	<title>test - Dennis Lang</title> 
+	<link rel=StyleSheet href=dtree/dtree.css type=text/css /> 
+	<script type=text/javascript src=dtree/dtree.js></script>  
+</head>           
+<body>            
+<h2>Example</h2>  
+<div class=dtree> 
+	<p><a href=javascript:d.openAll();>open all</a> | <a href=javascript:d.closeAll();>close all</a></p>  
+	<script type=text/javascript> 
+		<!--                
+		d = new dTree('d'); 
+       d.add(0, -1, 'test');
+d.add(1,0,'Base','file:////Users/ldennis/projects/projects-xcode/javatree-x1.6/javatree/test/Base.java');
+d.add(2,1,'BaseBeta','file:////Users/ldennis/projects/projects-xcode/javatree-x1.6/javatree/test/BaseBeta.java');
+d.add(3,2,'BaseBetaAlpha','file:////Users/ldennis/projects/projects-xcode/javatree-x1.6/javatree/test/BaseBetaAlpha.java');
+d.add(4,1,'BaseAlpha','file:////Users/ldennis/projects/projects-xcode/javatree-x1.6/javatree/test/BaseAlpha.java');
+d.add(5,0,'BaseBetaAlpha.Ibba','file:////Users/ldennis/projects/projects-xcode/javatree-x1.6/javatree/test/BaseBetaAlpha.java');
+d.add(6,0,'BaseBetaAlphaAlpha','file:////Users/ldennis/projects/projects-xcode/javatree-x1.6/javatree/test/BaseBetaAlphaAlpha.java');
+		document.write(d); 
+       d.openAll();
+		//--> 
+	</script> 
+</div>  
+</body> 
+</html> 
+
