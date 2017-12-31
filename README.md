@@ -90,8 +90,18 @@ javatree -z test    > reports/directgraph.dot
 Sample reports
 ***
 
+        "\n  h  ; Html tree connections (needs images 0.png, 1.png, 2.png, n.png)"
+            "\n  j  ; Java tree connections (needs dtree www.destroydrop.com/javascript/tree/)"
+            "\n  z  ; GraphViz (see https://graphviz.gitlab.io/)"
+            
+            
 ### javatree -h test    >  reports/html.html
 ![ScreenShot](http://landenlabs.com/code/javatree/images/report-html.png)
+The above html report needs several png images to correctly display the page.
+![ScreenShot](http://landenlabs.com/code/javatree/reports/0.png)
+![ScreenShot](http://landenlabs.com/code/javatree/reports/1.png)
+![ScreenShot](http://landenlabs.com/code/javatree/reports/2.png)
+![ScreenShot](http://landenlabs.com/code/javatree/reports/n.png)
 
 ### javatree -h -T test >  reports/tabular.html
 ![ScreenShot](http://landenlabs.com/code/javatree/images/report-tabular.png)
