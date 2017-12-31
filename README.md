@@ -5,6 +5,12 @@ Java Developer Tool
 WebSite
 [http://landenlabs.com](http://landenlabs.com)
 
+Github
+[https://github.com/landenlabs/javatree](https://github.com/landenlabs/javatree)
+
+Sample Android class tree diagrams, tables and direct graphs
+[http://landenlabs.com](http://landenlabs.com/android/classtree/classtree.html)
+
 ***
 Parse Java source files and produce class relationship as HTML, GraphViz or Text file
 ***
@@ -27,9 +33,9 @@ Output format (single choice):
 * g  ; Use graphics for tree connections
   x  ; Use (+|-) for tree connections
   s  ; Use spaces for tree connections
-  h  ; Html tree connections
-  j  ; Java tree connections
-  z  ; GraphViz 
+  h  ; Html tree connections (needs images 0.png, 1.png, 2.png, n.png)
+  j  ; Java tree connections (needs dtree www.destroydrop.com/javascript/tree/)
+  z  ; GraphViz (see https://graphviz.gitlab.io/)
 
 <p>
 Modifiers:
@@ -104,3 +110,5 @@ Sample reports
 ![ScreenShot](http://landenlabs.com/code/javatree/images/directgraph.png)
 
 
+### Sample Android class tree diagrams, tables and direct graphs
+[http://landenlabs.com](http://landenlabs.com/android/classtree/classtree.html)
