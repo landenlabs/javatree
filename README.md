@@ -94,7 +94,7 @@ Sample reports
 ![ScreenShot](http://landenlabs.com/code/javatree/images/report-text.png)
 
 ### javatree -t +n test >  reports/list.txt
-![ScreenShot](http://landenlabs.com/code/javatree/images/report-text.png)
+![ScreenShot](http://landenlabs.com/code/javatree/images/report-list.png)
 
 ### javatree -j test    > reports/tree.html
 ![ScreenShot](http://landenlabs.com/code/javatree/images/report-tree.png)
