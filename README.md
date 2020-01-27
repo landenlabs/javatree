@@ -1,5 +1,6 @@
 ### a LanDen Labs - JavaTree
 Java Developer Tool
+27-Jan-2020
 
 
 WebSite
@@ -13,7 +14,15 @@ Sample Android class tree diagrams, tables and direct graphs
 
 ***
 Parse Java source files and produce class relationship as HTML, GraphViz or Text file
+
+**NOTE - Please switch to llclasses which has replaced this program. llclasses has improved Java parsing and supports C++.**
+
+[llclasses](http://github.com/landenlabs/llclasses)
+
+
 ***
+
+**NO LONGER SUPPORTED - Please switch to** [llclasses](http://github.com/landenlabs/llclasses)
 
 Javatree help banner
 <blockquote>
@@ -126,3 +135,5 @@ Needs Graphviz to render dot as an image, [https://graphviz.gitlab.io](https://g
 
 ### Sample Android class tree diagrams, tables and direct graphs
 [http://landenlabs.com](http://landenlabs.com/android/classtree/classtree.html)
+
+NO LONGER SUPPORTED - Please switch to [llclasses](http://github.com/landenlabs/llclasses)
